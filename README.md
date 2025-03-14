@@ -221,6 +221,3 @@ Instead of manually running multiple Docker containers, Kubernetes can be used f
 
   * Deploy to Kubernetes - `kubectl apply -f deployment.yaml`
   * Scale the Application - `kubectl scale deployment ideahub-webserver-app --replicas=5`
-  
-Conclusion
-This documentation provides detailed steps for setting up the Health Check API, with additional instructions for Jenkins, Terraform, and CloudWatch if they were used.
