@@ -17,9 +17,9 @@ Response: {"status": "ok"}
 ## 2. How to Build and Run the Service
 
 Inside the task folder it has following files,
-    * app.py
-    * Dockerfile
-    * requirements.txt
+  * app.py
+  * Dockerfile
+  * requirements.txt
 
 Background requirments, 
 
@@ -179,10 +179,48 @@ This runs pop up another instance container on port 8082.
 
 Instead of manually running multiple Docker containers, Kubernetes can be used for orchestration and scaling. 
 
-* Install Kubernetes
+  * Install Kubernetes - For this implemetation we could use either Minikube for Local or EKS for AWS
+  * Create Kubernetes Deployment - For the K8s deployment part we have to create both deployment and service kind, following are basic deployment examples,
 
-  For this implemetation we could use either Minikube for Local or EKS for AWS
+  ```
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: ideahub-webserver-app
+  spec:
+    replicas: 2  # Number of pods to run
+    selector:
+      matchLabels:
+        app: ideahub-webserver
+    template:
+      metadata:
+        labels:
+          app: ideahub-webserver
+      spec:
+        containers:
+        - name: webserver-container
+          image: jummy98/ideahub_webserver:latest
+          ports:
+          - containerPort: 80
+  ```
+
+  ```
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: webserver-service
+  spec:
+    selector:
+      app: ideahub-webserver
+    ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+    type: LoadBalancer
+  ```
+
+  * Deploy to Kubernetes - `kubectl apply -f deployment.yaml`
+  * Scale the Application - `kubectl scale deployment ideahub-webserver-app --replicas=5`
   
-
 Conclusion
 This documentation provides detailed steps for setting up the Health Check API, with additional instructions for Jenkins, Terraform, and CloudWatch if they were used.
